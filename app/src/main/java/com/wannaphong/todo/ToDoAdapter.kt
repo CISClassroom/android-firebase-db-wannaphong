@@ -48,6 +48,6 @@ class ToDoAdapter(context:Context, itemList: MutableList<ToDoItem>) : BaseAdapte
     }
 
     override fun getCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return items.size
     }
 }
