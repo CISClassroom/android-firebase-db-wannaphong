@@ -41,12 +41,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onDataChange(p0: DataSnapshot) {
-            addDataToList()
+            addDataToList(p0)
         }
 
     }
 
-    private fun addDataToList() {
+    private fun addDataToList(dataSnapshot: DataSnapshot) {
+        val items = dataSnapshot.children.iterator()
+        if(items.hasNext()){
+            val todoListIndex = items.next()
+            val itemsIterator = todoListIndex.children.iterator()
+
+            while (itemsIterator.hasNext()){
+                val currentItem = itemsIterator.next()
+                val map = currentItem.getValue() as HashMap<String,Any>
+                val toDoItem = ToDoItem.create()
+                toDoItem.objID = currentItem.key
+                toDoItem.status = map.get("status") as Boolean
+                toDoItem.todoName = map.get("todoName") as String
+                todoItemList!!.add(toDoItem)
+            }
+        }
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
