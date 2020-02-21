@@ -5,20 +5,47 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
+    lateinit var mDB: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        mDB = FirebaseDatabase.getInstance().reference
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            addNewItem()
         }
+    }
+     fun addNewItem(){
+        val dialog = AlertDialog.Builder(this)
+         val et = EditText(this)
+
+         dialog.setMessage("Add New ToDo")
+         dialog.setTitle("Enter ToDo item")
+         dialog.setView(et)
+
+         dialog.setPositiveButton("Submit"){
+             dialog,positiveButton ->
+             val newTODO = ToDoItem.create()
+             newTODO.todoName = et.text.toString()
+             newTODO.status = false
+
+
+             val newItemDB = mDB.child("TODO_item").push()
+             newTODO.objID = newItemDB.key
+             newItemDB.setValue(newTODO)
+             dialog.dismiss()
+
+         }
+         dialog.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
