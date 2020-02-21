@@ -35,16 +35,16 @@ class ToDoAdapter(context:Context, itemList: MutableList<ToDoItem>) : BaseAdapte
     }
     private class ListRowHolder(row:View?){
         val label = row!!.findViewById<TextView>(R.id.textView)
-        val checkbox = row!!.findViewById<CheckBox>(R.id.checkBox)
-        val deleteButton = row!!.findViewById<ImageButton>(R.id.imageButton)
+        val checkbox = row!!.findViewById<CheckBox>(R.id.checkBox) as CheckBox
+        val deleteButton = row!!.findViewById<ImageButton>(R.id.imageButton) as ImageButton
     }
 
     override fun getItem(position: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return  items.get(position)
     }
 
     override fun getItemId(position: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return position.toLong()
     }
 
     override fun getCount(): Int {
