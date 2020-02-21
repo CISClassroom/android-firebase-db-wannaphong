@@ -5,7 +5,9 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
+import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -19,6 +21,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         mDB = FirebaseDatabase.getInstance().reference
+        var listviewitem:ListView? = findViewById<View>(R.id.items_list) as ListView
+
+        var todoItemList = mutableListOf<ToDoItem>()
+        var adapter = ToDoAdapter(this,todoItemList!!)
+
+        listviewitem!!.setAdapter(adapter)// !! ไม่มีทางเป็น null
+        //mDB.orderByKey().addListenerForSingleValueEvent(adapter)
 
         fab.setOnClickListener { view ->
             addNewItem()
