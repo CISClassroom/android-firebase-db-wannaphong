@@ -31,6 +31,9 @@ class ToDoAdapter(context:Context, itemList: MutableList<ToDoItem>) : BaseAdapte
         }
         vh.label.text = todoName
         vh.checkbox.isChecked = statue
+
+        
+
         return view
     }
     private class ListRowHolder(row:View?){

@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
         mDB = FirebaseDatabase.getInstance().reference
         var listviewitem:ListView? = findViewById<View>(R.id.items_list) as ListView
 
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 toDoItem.todoName = map.get("todoName") as String
                 todoItemList!!.add(toDoItem)
             }
+            adapter.notifyDataSetChanged()
         }
 
     }
@@ -84,6 +86,9 @@ class MainActivity : AppCompatActivity() {
              newTODO.objID = newItemDB.key
              newItemDB.setValue(newTODO)
              dialog.dismiss()
+
+             todoItemList!!.add(newTODO)
+             adapter.notifyDataSetChanged()
 
          }
          dialog.show()
