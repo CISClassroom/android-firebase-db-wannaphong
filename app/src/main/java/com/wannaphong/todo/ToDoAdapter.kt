@@ -13,6 +13,8 @@ class ToDoAdapter(context:Context, itemList: MutableList<ToDoItem>) : BaseAdapte
     var items = itemList
     var mInflater = LayoutInflater.from(context)
 
+    var rowListener = context as ItemRowListener
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val objID = items.get(position).objID as String
         val todoName = items.get(position).todoName as String
@@ -32,14 +34,19 @@ class ToDoAdapter(context:Context, itemList: MutableList<ToDoItem>) : BaseAdapte
         vh.label.text = todoName
         vh.checkbox.isChecked = statue
 
-        
+        vh.checkbox.setOnClickListener {
+            rowListener.modifyItemState(objID,position,statue)
+        }
+        vh.deleteButton.setOnClickListener {
+            rowListener.onItemDelete(objID,position)
+        }
 
         return view
     }
     private class ListRowHolder(row:View?){
         val label = row!!.findViewById<TextView>(R.id.textView)
-        val checkbox = row!!.findViewById<CheckBox>(R.id.checkBox) as CheckBox
-        val deleteButton = row!!.findViewById<ImageButton>(R.id.imageButton) as ImageButton
+        val checkbox = row!!.findViewById<CheckBox>(R.id.checkBox)
+        val deleteButton = row!!.findViewById<ImageButton>(R.id.imageButton)
     }
 
     override fun getItem(position: Int): Any {

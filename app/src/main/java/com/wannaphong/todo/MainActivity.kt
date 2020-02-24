@@ -13,7 +13,7 @@ import com.google.firebase.database.*
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ItemRowListener {
     lateinit var mDB: DatabaseReference
     var todoItemList: MutableList<ToDoItem>? = null
     lateinit var adapter: ToDoAdapter
@@ -108,5 +108,23 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun modifyItemState(itemID: String, index: Int, status: Boolean) {
+        // update adapter
+        todoItemList!!.get(index).status = !status
+        adapter.notifyDataSetChanged()
+        // update firebase
+        val itemRef = mDB.child("TODO_item").child(itemID)
+        itemRef.child("status").setValue(status)
+       // adapter.notifyDataSetChanged()
+    }
+
+    override fun onItemDelete(itemID: String, index: Int) {
+        todoItemList!!.removeAt(index)
+        adapter.notifyDataSetChanged()
+
+        val itemRef = mDB.child("TODO_item").child(itemID)
+        itemRef.removeValue()
     }
 }
